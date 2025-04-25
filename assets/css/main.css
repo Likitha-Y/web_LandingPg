@@ -1223,3 +1223,92 @@
       gap: 1rem;
     }
   }
+ /* ===== COLOR REVEAL ANIMATION ===== */
+
+/* Base Text Styles */
+.section-title {
+  position: relative;
+  color: white; /* Fallback color */
+  margin-bottom: 2rem; /* Consistent spacing */
+}
+
+/* Color Reveal Element */
+.color-reveal {
+  position: relative;
+  display: inline-block;
+  background-image: linear-gradient(
+    to right,
+    var(--cyber-blue) 50%,  /* Cyber Blue for the first half */
+    white 50%            /* White for the second half */
+  );
+  background-size: 200% 100%;
+  background-position: right center; /* Start with Cyber Blue hidden */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  transition: background-position 1.2s ease-out;
+}
+
+/* Active State (When Scrolling Into View) */
+.color-reveal.active {
+  background-position: left center; /* Animate to reveal Cyber Blue */
+  background-image: linear-gradient(
+    to right,
+    var(--cyber-blue), /* Cyber Blue for the first color */
+    var(--cyber-purple)  /* Cyber Purple for the second color */
+  );
+}
+/* ===== COLOR REVEAL ANIMATION ===== */
+
+/* Base Text Styles */
+.section-title {
+  position: relative;
+  color: white; /* Fallback color */
+  margin-bottom: 2rem; /* Consistent spacing */
+}
+
+/* Color Reveal Element */
+.color-reveal {
+  display: inline-block;
+  position: relative;
+  background-image: linear-gradient(to right, var(--cyber-blue), white);
+  background-size: 200% 100%;
+  background-position: right center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  transition: background-position 1.2s ease-out;
+}
+
+/* Active State (When Scrolling Into View) */
+.color-reveal.active {
+  background-position: left center;
+  background-image: linear-gradient(to right, var(--cyber-blue), var(--cyber-purple));
+}
+
+/* Optional Glow Effect */
+.color-reveal.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 2px;
+  background: var(--cyber-gradient);
+  box-shadow: 0 0 15px var(--cyber-blue);
+  animation: cyber-glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes cyber-glow {
+  from {
+    opacity: 0.5;
+    box-shadow: 0 0 5px var(--cyber-blue);
+  }
+  to {
+    opacity: 1;
+    box-shadow: 0 0 20px var(--cyber-blue), 
+                0 0 30px var(--cyber-purple);
+  }
+}

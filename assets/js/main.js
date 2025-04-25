@@ -98,3 +98,87 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   });
+  
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Animation function (unchanged)
+    function animateNumber(element, target, duration) {
+        let start = 0;
+        let startTimestamp = null;
+        const isFloat = target % 1 !== 0;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            let value = progress * target;
+            if (isFloat) {
+                value = value.toFixed(1);
+            } else {
+                value = Math.floor(value);
+            }
+            element.textContent = value;
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            } else {
+                element.textContent = target;
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+
+    // Observer callback (modified for multiple sections)
+    function handleIntersection(entries, observer) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const numbers = entry.target.querySelectorAll('.stat-number');
+                numbers.forEach(num => {
+                    const target = parseFloat(num.getAttribute('data-count'));
+                    animateNumber(num, target, 1500);
+                });
+                observer.unobserve(entry.target);
+            }
+        });
+    }
+
+    // Set up observers for BOTH sections
+    const sections = [
+        document.querySelector('.threat-monitor'),
+        document.querySelector('.cyber-stats')
+    ];
+
+    sections.forEach(section => {
+        if (section) {
+            const observer = new IntersectionObserver(handleIntersection, {
+                threshold: 0.5
+            });
+            observer.observe(section);
+        }
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const revealElement = document.querySelector('.color-reveal');
+
+  if (!revealElement) {
+    console.error('Color reveal element not found!'); // Check if the JS can find it
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          revealElement.classList.add('active');
+          observer.unobserve(revealElement); // Stop observing after activation
+        }
+      });
+    },
+    {
+      threshold: 0.1 // Adjust threshold as needed (0.1 = 10% visible)
+    }
+  );
+
+  observer.observe(revealElement);
+});
